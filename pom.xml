@@ -641,7 +641,13 @@
 		</pluginManagement>
 
 	</build>
-
+	<distributionManagement>
+	   <repository>
+	     <id>github</id>
+	     <name>GitHub DubboX Packages</name>
+	     <url>https://maven.pkg.github.com/dantesun/dubbox</url>
+	   </repository>
+	</distributionManagement>
 	<issueManagement>
 		<system>jira</system>
 		<url>http://code.alibabatech.com/jira/browse/DUBBO</url>
