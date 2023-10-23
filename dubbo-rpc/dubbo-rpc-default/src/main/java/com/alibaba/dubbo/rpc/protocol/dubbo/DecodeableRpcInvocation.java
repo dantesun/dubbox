@@ -103,7 +103,10 @@ public class DecodeableRpcInvocation extends RpcInvocation implements Codec, Dec
                 Class<?>[] pts;
 
                 // NOTICE modified by lishen
-                int argNum = in.readInt();
+                int argNum = -1;
+                if (!"2.7.1".equals(getAttachment(Constants.DUBBO_VERSION_KEY))) {
+                    argNum = in.readInt();
+                }
                 if (argNum >= 0) {
                     if (argNum == 0) {
                         pts = DubboCodec.EMPTY_CLASS_ARRAY;

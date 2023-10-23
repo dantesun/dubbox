@@ -17,6 +17,7 @@ package com.alibaba.dubbo.demo.bid;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class BidServiceImpl implements BidService {
 
@@ -34,6 +35,11 @@ public class BidServiceImpl implements BidService {
         response.setSeatBids(seatBids);
 
         return response;
+    }
+
+    @Override
+    public String say(Map<String, String> request) {
+        return request.toString();
     }
 
     public void throwNPE() throws NullPointerException {

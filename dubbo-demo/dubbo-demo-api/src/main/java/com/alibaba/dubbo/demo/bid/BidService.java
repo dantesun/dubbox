@@ -15,9 +15,13 @@
  */
 package com.alibaba.dubbo.demo.bid;
 
+import java.util.Map;
+
 public interface BidService {
 
 	BidResponse bid(BidRequest request);
+
+    String say(Map<String, String> request);
 
     void throwNPE() throws NullPointerException;
 }
