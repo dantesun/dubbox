@@ -27,8 +27,6 @@ import com.alibaba.dubbo.common.logger.Logger;
 import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.alibaba.dubbo.common.serialize.Cleanable;
 import com.alibaba.dubbo.common.serialize.ObjectInput;
-import com.alibaba.dubbo.common.serialize.OptimizedSerialization;
-import com.alibaba.dubbo.common.serialize.support.kryo.KryoSerialization;
 import com.alibaba.dubbo.common.utils.Assert;
 import com.alibaba.dubbo.common.utils.ReflectUtils;
 import com.alibaba.dubbo.common.utils.StringUtils;
@@ -47,6 +45,7 @@ import static com.alibaba.dubbo.rpc.protocol.dubbo.CallbackServiceCodec.decodeIn
 public class DecodeableRpcInvocation extends RpcInvocation implements Codec, Decodeable {
 
     private static final Logger log = LoggerFactory.getLogger(DecodeableRpcInvocation.class);
+    private static final String STANDARD_DUBBO_VERSION = "2.7.1-h0+85b9ab1";
 
     private Channel     channel;
 
@@ -104,7 +103,8 @@ public class DecodeableRpcInvocation extends RpcInvocation implements Codec, Dec
 
                 // NOTICE modified by lishen
                 int argNum = -1;
-                if (!"2.7.1".equals(getAttachment(Constants.DUBBO_VERSION_KEY))) {
+                if (!STANDARD_DUBBO_VERSION.equals(getAttachment(Constants.DUBBO_VERSION_KEY))) {
+                    log.debug("Skip reading argNum.");
                     argNum = in.readInt();
                 }
                 if (argNum >= 0) {
