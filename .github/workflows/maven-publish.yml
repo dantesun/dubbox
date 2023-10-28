@@ -49,19 +49,27 @@ jobs:
     - name: Checksum
       id: checksum
       run:  |
-            {
-              echo sha256sum="$(sha256sum dubbo/target/dubbo-${{ steps.maven.outputs.version }}.jar)"
-            } >> $GITHUB_OUTPUT
+        {
+          directory=${{ github.workspace}}/dubbo/target/ }}
+          echo directory=${directory} >> $GITHUB_OUTPUT
+          
+          name=dubbo-${{ steps.maven.outputs.version }}
+          echo name=${name} >> $GITHUB_OUTPUT
+        
+          sha256sum="$(sha256sum ${directory}/${name}.jar | awk NF=1)"
+          echo ${sha256sum} > ${directory}/${name}.sha256
+          echo sha256sum=${sha256sum} >> $GITHUB_OUTPUT
+          
+        }
     - name: Create Release
       uses: ncipollo/release-action@v1
       with:
         artifacts: -|
-          ${{ github.workspace }}/dubbo/target/doubbo-${{ steps.maven.outputs.version }}.jar,
-          ${{ github.workspace }}/dubbo/target/doubbo-${{ steps.maven.outputs.version }}-sources.jar,
+          ${{ steps.checksum.outputs.directory }}/${{ steps.checksum.outputs.name}}.jar,
+          ${{ steps.checksum.outputs.directory }}/${{ steps.checksum.outputs.name}}.jar.sha256,
+          ${{ steps.checksum.outputs.directory }}/${{ steps.checksum.outputs.name}}-sources.jar
         allowUpdates: true
         artifactErrorsFailBuild: true
         prerelease: true
-        body: |-
-          ${{ steps.checksum.outputs.sha256sum }}
         tag: ${{ steps.maven.outputs.version }}
 
