@@ -55,9 +55,7 @@ jobs:
     - name: Create Release
       uses: ncipollo/release-action@v1
       with:
-        artifacts: |-
-            dubbo/target/dubbo-${{ steps.maven.outputs.version }}.jar,
-            dubbo/target/dubbo-${{ steps.maven.outputs.version }}-sources.jar
+        artifacts: "${{ github.workspace }}/dubbo/target/*.jar"
         allowUpdates: true
         artifactErrorsFailBuild: true
         prerelease: true
