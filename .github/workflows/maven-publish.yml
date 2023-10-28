@@ -43,11 +43,11 @@ jobs:
             } >> $GITHUB_STEP_SUMMARY
     - name: Release
       uses: softprops/action-gh-release@v1
-        with:
-          name: ${{steps.env.outputs.version}}
-          files: |
-            dubbo/dubbo-${{steps.env.outputs.version}}.jar
-            dubbo/dubbo-${{steps.env.outputs.version}}-sources.jar
-          prerelease: true
+      with:
+        name: ${{steps.env.outputs.version}}
+        files: |
+          dubbo/dubbo-${{steps.env.outputs.version}}.jar
+          dubbo/dubbo-${{steps.env.outputs.version}}-sources.jar
+        prerelease: true
           
 
