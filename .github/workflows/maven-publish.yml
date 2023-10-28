@@ -50,7 +50,7 @@ jobs:
       id: checksum
       run:  |
         {
-          directory=${{ github.workspace}}/dubbo/target/ }}
+          directory=${{ github.workspace}}/dubbo/target/ 
           echo directory=${directory} >> $GITHUB_OUTPUT
           
           name=dubbo-${{ steps.maven.outputs.version }}
