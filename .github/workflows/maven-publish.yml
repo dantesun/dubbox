@@ -30,8 +30,8 @@ jobs:
       run: |
         {
           set -e
-          git tag ${{steps.maven.outputs.version}}
-          git push --delete origin ${{steps.maven.outputs.version}}
+          git tag -f ${{steps.maven.outputs.version}}
+          git push -f origin ${{steps.maven.outputs.version}}
         }
     - name: Set up JDK 1.8
       uses: actions/setup-java@v3
@@ -50,7 +50,7 @@ jobs:
               echo "| Variable   | Value       |"
               echo "| ---------- | ----------- |"
               echo "| version    | ${{steps.maven.outputs.version}}    |"
-              echo "| checksum   | $(sha256sum dubbo/dubbo-${version}*.jar) |"
+              echo "| checksum   | $(sha256sum dubbo/target/dubbo-${{ steps.maven.outputs.version }}*.jar) |"
             } >> $GITHUB_STEP_SUMMARY
     - name: Create Release
       # Uses the create-github-release action
