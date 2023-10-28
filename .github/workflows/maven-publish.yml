@@ -67,9 +67,7 @@ jobs:
     - name: Create Release
       uses: ncipollo/release-action@v1
       with:
-        artifacts: -|
-          ${{ steps.checksum.outputs.file }},
-          ${{ steps.checksum.outputs.file }}.sha256
+        artifacts: "${{ steps.checksum.outputs.file }}, ${{ steps.checksum.outputs.file }}.sha256"
         allowUpdates: true
         artifactErrorsFailBuild: true
         prerelease: true
