@@ -61,8 +61,8 @@ jobs:
 
         # (Optional) Files to include in the release
         files: |
-          ${{ github.workspace }}/dubbox/dubbo/target/dubbo-${{steps.maven.outputs.version}}.jar
-          ${{ github.workspace }}/dubbox/dubbo/target/dubbo-${{steps.maven.outputs.version}}-sources.jar
+          ${{ github.workspace }}/dubbo/target/dubbo-${{steps.maven.outputs.version}}.jar
+          ${{ github.workspace }}/dubbo/target/dubbo-${{steps.maven.outputs.version}}-sources.jar
 
         # (Optional) Defines the title of the release
         title: Release ${{ steps.maven.outputs.version }}
