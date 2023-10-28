@@ -4,8 +4,8 @@
 name: Maven Package
 
 on:
-  release:
-    types: [created]
+  # release:
+  #   types: [created]
   # push:
   #     branches:
   #       - master
@@ -13,12 +13,10 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 1.8
@@ -28,11 +26,28 @@ jobs:
         distribution: 'zulu'
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
-
     - name: Build with Maven
       run: mvn -DskipTests -B package --file pom.xml
+    - name: Output Version
+      id: env
+      run: |
+            {
+              "version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
+            } >> $GITHUB_OUTPUT
+            {
+              echo "### Details "
+              echo "| Variable   | Value       |"
+              echo "| ---------- | ----------- |"
+              echo "| version    | $version    |"
+              echo "| checksum   | $(sha256sum dubbo/dubbo-${version}*.jar) |"
+            } >> $GITHUB_STEP_SUMMARY
+    - name: Release
+      uses: softprops/action-gh-release@v1
+        with:
+          name: ${{steps.env.outputs.version}}
+          files: |
+            dubbo/dubbo-${{steps.env.outputs.version}}.jar
+            dubbo/dubbo-${{steps.env.outputs.version}}-sources.jar
+          prerelease: true
+          
 
-    - uses: actions/upload-artifact@v3
-      with:
-        name: dubbo-all
-        path: dubbo/target/dubbo-*.jar
