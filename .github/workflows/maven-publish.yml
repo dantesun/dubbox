@@ -50,36 +50,16 @@ jobs:
               echo "| Variable   | Value       |"
               echo "| ---------- | ----------- |"
               echo "| version    | ${{steps.maven.outputs.version}}    |"
-              echo "| checksum   | $(sha256sum dubbo/target/dubbo-${{ steps.maven.outputs.version }}*.jar) |"
+              echo "| $(sha256sum dubbo/target/dubbo-${{ steps.maven.outputs.version }}.jar) |"
             } >> $GITHUB_STEP_SUMMARY
     - name: Create Release
-      # Uses the create-github-release action
-      uses: nekofar/create-github-release@v1
+      uses: ncipollo/release-action@v1
       with:
-        # Defines the tag name for the release (e.g., v1.0.0).
-        tag: ${{ steps.maven.outputs.version }}
-
-        # (Optional) Files to include in the release
-        files: |
-          ${{ github.workspace }}/dubbo/target/dubbo-${{steps.maven.outputs.version}}.jar
-          ${{ github.workspace }}/dubbo/target/dubbo-${{steps.maven.outputs.version}}-sources.jar
-
-        # (Optional) Defines the title of the release
-        title: Release ${{ steps.maven.outputs.version }}
-
-        # (Optional) Allows multiline release notes
-        notes: |
-          This is the release notes for version ${{ steps.maven.outputs.version }}.
-
-        # (Optional) Set to "true" to create a draft release. Default is "false"
-        draft: false
-
-        # (Optional) Set to "true" to create a pre-release. Default is "false"
+        artifacts: |-
+            dubbo/target/dubbo-${{ steps.maven.outputs.version }}.jar,
+            dubbo/target/dubbo-${{ steps.maven.outputs.version }}-sources.jar
+        allowUpdates: true
+        artifactErrorsFailBuild: true
         prerelease: true
-
-        # (Optional) Set to "true" to mark this release as the latest. Default is "false"
-        latest: true
-
-        # (Optional) GitHub token for authentication. Default: ${{ github.token }}. If not provided, it will use the repository's default token
-#         token: ${{ github.token }}          
+        tag: ${{ steps.maven.outputs.version }}
 
